@@ -1,0 +1,19 @@
+{
+  "name": "animate-server",
+  "version": "1.0.0",
+  "description": "A realtime chat with video and gift",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jesusgutierrez/animate-server.git"
+  },
+  "author": "Jesus Gutierrez <jesusgut24\u001b2@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/jesusgutierrez/animate-server/issues"
+  },
+  "homepage": "https://github.com/jesusgutierrez/animate-server#readme"
+}
