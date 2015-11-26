@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jesusgutierrez/animate-server/issues"
   },
-  "homepage": "https://github.com/jesusgutierrez/animate-server#readme"
+  "homepage": "https://github.com/jesusgutierrez/animate-server#readme",
+  "dependencies": {
+    "st": "^1.0.0"
+  }
 }
