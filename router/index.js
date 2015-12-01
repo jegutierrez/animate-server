@@ -13,16 +13,24 @@ const mount = st({
 	passThrough: true
 })
 
-router.post('/process', function(req, res){
-	jsonBody(req, res, {limit: 5*1024*1024}, function(err, body){
-		if(err) return fail(err, res)
+router.post('/process', function (req, res) {
+  jsonBody(req, res, { limit: 3 * 1024 * 1024 }, function (err, body) {
+    if (err) return fail(err, res)
 
-		let converter = helper.convertVideo(body, images)
-		converter.on('video', function(video){
-			res.setHeader('Content-Type', 'application/json')
-			res.end(JSON.stringify({ok:'true'}))
-		})
-	})
+    if (Array.isArray(body.images)) {
+      let converter = helper.convertVideo(body.images)
+
+      converter.on('video', function (video) {
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify({ video: video }))
+      })
+
+    } else {
+      res.statusCode = 500
+      res.end(JSON.stringify({ error: 'parameter `images` is required' }))
+    }
+
+  })
 })
 
 function onRequest(request, response){
