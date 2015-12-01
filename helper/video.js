@@ -1,10 +1,18 @@
 'use strict'
 
+const fs = require('fs')
+const path = require('path')
 const EventEmitter = require('events').EventEmitter
 const async = require('async')
+const dataUriBuffer = require('data-uri-to-buffer')
+const os = require('os')
+const uuid = require('uuid');
 
 module.exports = function(images){
 	let events = new EventEmitter()
+	let count = 0
+	let baseName = uuid.v4()
+	let tmpDir = os.tmpDir()
 
 	async.series([
 		decodeImages,
@@ -14,7 +22,18 @@ module.exports = function(images){
 	], convertFinished)
 
 	function decodeImages(done){
-		done()
+		async.eachSeries(images, decodeImage, done)
+	}
+
+	function decodeImage(image, done){
+		let fileName = `${baseName}-${count++}.jpg`
+		let buffer = dataUriBuffer(image)
+		let ws = fs.createWriteStream(path.join(tmpDir, fileName))
+
+		ws.on('error', done)
+     	  .end(buffer, done)
+
+    	events.emit('log', `Converting ${fileName}`)
 	}
 
 	function createVideo(done){
