@@ -9,18 +9,20 @@ const os = require('os')
 const uuid = require('uuid');
 const listFiles = require('./list')
 const ffmpeg = require('./ffmpeg')
+const concat = require('concat-stream')
 
 module.exports = function(images){
 	let events = new EventEmitter()
 	let count = 0
 	let baseName = uuid.v4()
 	let tmpDir = os.tmpDir()
+	let video
 
 	async.series([
 		decodeImages,
 		createVideo,
 		encodeVideo,
-		//cleanup
+		cleanup
 	], convertFinished)
 
 	function decodeImages(done){
@@ -39,15 +41,25 @@ module.exports = function(images){
 	}
 
 	function createVideo(done){
-		    events.emit('log', 'Creating video')
-		    ffmpeg({
-		      baseName: baseName,
-		      folder: tmpDir
-		    }, done)
+	    events.emit('log', 'Creating video')
+	    ffmpeg({
+	      baseName: baseName,
+	      folder: tmpDir
+	    }, done)
 	}
 
 	function encodeVideo(done){
-		done()
+	    let fileName = `${baseName}.webm`
+	    let rs = fs.createReadStream(path.join(tmpDir, fileName))
+	
+	    events.emit('log', `Encoding video ${fileName}`)
+	
+	    rs.pipe(concat(function (videoBuffer) {
+	      video = `data:video/webm;base64,${videoBuffer.toString('base64')}`
+	      done()
+	    }))
+	
+	    rs.on('error', done)
 	}
 
 	function cleanup(done){
@@ -73,9 +85,8 @@ module.exports = function(images){
 	}
 
 	function convertFinished(err){
-		setTimeout(function(){
-			events.emit('video', 'test')
-		}, 1000)
+		if (err) return events.emit('error', err)
+		events.emit('video', video)
 	}
 
 
