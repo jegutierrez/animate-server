@@ -7,9 +7,9 @@ const async = require('async')
 const dataUriBuffer = require('data-uri-to-buffer')
 const os = require('os')
 const uuid = require('uuid');
+const concat = require('concat-stream')
 const listFiles = require('./list')
 const ffmpeg = require('./ffmpeg')
-const concat = require('concat-stream')
 
 module.exports = function(images){
 	let events = new EventEmitter()
@@ -22,7 +22,7 @@ module.exports = function(images){
 		decodeImages,
 		createVideo,
 		encodeVideo,
-		cleanup
+		//cleanup
 	], convertFinished)
 
 	function decodeImages(done){

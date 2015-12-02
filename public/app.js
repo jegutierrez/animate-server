@@ -6,13 +6,13 @@ const rtc = new Webrtc2images({
 	width: 200,
 	height: 200,
 	frames: 10,
-	type: 'images/jpeg',
+	type: 'image/jpeg',
 	quiality: 0.4,
 	interval: 200
 })
 
-rtc.startVideo(function(err){
-
+rtc.startVideo(function (err) {
+   if (err) return logError(err)
 })
 
 const record = document.querySelector('#record')
@@ -29,7 +29,14 @@ record.addEventListener('click', function(e){
 			body: JSON.stringify({images:frames})
 		}, function(err, res, body){
 			if(err) return logError(err)
-			console.log(JSON.parse(body))
+	        body = JSON.parse(body)
+	  
+	        if (body.video) {
+	          const video = document.querySelector('#video')
+	          video.src = body.video
+	          video.loop = true
+	          video.play()
+	        }
 		})
 	})
 }, false)
