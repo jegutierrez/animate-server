@@ -22,7 +22,7 @@ module.exports = function(images){
 		decodeImages,
 		createVideo,
 		encodeVideo,
-		//cleanup
+		cleanup
 	], convertFinished)
 
 	function decodeImages(done){
