@@ -13,17 +13,25 @@ module.exports = function(server){
 	function onConnection(socket){
 		console.log(`Client Connected ${socket.id}`)
 
+	    db.list(function (err, messages) {
+	      if (err) return console.error(err)
+	
+	      socket.emit('messages', messages)
+	    })
+
 		socket.on('message', function(message){
 			const converter = helper.convertVideo(message.frames)
 
 			converter.on('log', console.log)
 
-			converter.on('video', function(video){
+			converter.on('video', function (video){
 				delete message.frames
 				message.video = video
 
 				//save message
-				db.save(message, function(err){})
+				db.save(message, function (err) {
+		          if (err) return console.error(err)
+		        })
 
 				socket.broadcast.emit('message', message)
 				socket.emit('messageack', message)
