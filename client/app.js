@@ -46,9 +46,6 @@ function record(){
 
 		socket.emit('message', {id: id, message: message, frames: frames})
 		
-        if (body.video) {
-          addMessage({message: message, video: body.video})
-        }
 	})
 }
 
