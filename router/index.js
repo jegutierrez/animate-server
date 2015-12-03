@@ -37,14 +37,16 @@ router.post('/process', function (req, res) {
   })
 })
 
-function onRequest(request, response){
-	mount(request, response, function(error){
-		if(error) return fail(error, response)
+function onRequest(req, res){
+  if(req.url.startsWith('/socket.io')) return
 
-		router(request, response, function(error){
-			if(error) return fail(error, response)
-			response.statusCode = 404
-			response.end(`Not found ${request.url}`)
+	mount(req, res, function(error){
+		if(error) return fail(error, res)
+
+		router(req, res, function(error){
+			if(error) return fail(error, res)
+		 res.statusCode = 404
+		 res.end(`Not found ${req.url}`)
 		})
 	})
 }
