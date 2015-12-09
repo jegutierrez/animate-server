@@ -4,20 +4,18 @@
   "description": "A realtime chat with video and gift",
   "main": "server.js",
   "scripts": {
-    "postinstall": "npm run build-js",
-    "build-js": "browserify -t hbsfy client/app.js -o public/js/app.js",
     "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jesusgutierrez/animate-server.git"
   },
-  "author": "Jesus Gutierrez <jesusgut24\u001b2@gmail.com>",
+  "author": "Jesus Gutierrez <jesusgut24@gmail.com>",
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/jesusgutierrez/animate-server/issues"
   },
-  "homepage": "https://github.com/jesusgutierrez/animate-server#readme",
+  "homepage": "https://github.com/jesusgutierrez/animate-server",
   "dependencies": {
     "async": "^1.5.0",
     "body": "^5.1.0",
@@ -33,7 +31,8 @@
     "st": "^1.0.0",
     "uuid": "^2.0.1",
     "webrtc2images": "^1.4.4",
-    "xhr": "^2.2.0"
+    "xhr": "^2.2.0",
+    "animate-client": "git://github.com/jegutierrez/animate-client.git"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
